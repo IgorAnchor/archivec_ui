@@ -1,12 +1,13 @@
 package ua.chillcrew.archivec.ui.controllers;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sun.java2d.SurfaceDataProxy;
@@ -15,6 +16,8 @@ import ua.chillcrew.archivec.core.ArchivecCore;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainController {
 
@@ -23,6 +26,9 @@ public class MainController {
     private ArchivecCore archivecCore;
 
     private FileChooser fileChooser;
+    private DirectoryChooser directoryChooser;
+
+    private String currentArchive;
 
 
     @FXML
@@ -39,6 +45,12 @@ public class MainController {
         archivecCore = new ArchivecCore();
 
         fileChooser = new FileChooser();
+        directoryChooser = new DirectoryChooser();
+
+
+        fileChooser.setInitialDirectory(new File("C:\\Users\\IgorTheMLGPro\\CLionProjects\\3-1\\archivec-core\\cmake-build-debug\\1"));
+
+        tableArchiveContent.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -51,6 +63,22 @@ public class MainController {
 
     public void extract(ActionEvent event) {
         System.out.println("extract");
+
+
+    }
+
+    public void extractFiles(ActionEvent event) {
+        System.out.println("extractFiles");
+
+        if (tableArchiveContent.getSelectionModel().getSelectedItems().size() > 0) {
+
+            File destPath = directoryChooser.showDialog(stage);
+
+            List<Integer> ids = tableArchiveContent.getSelectionModel().getSelectedItems()
+                    .stream().map(ArchivatedFile::getId).collect(Collectors.toList());
+
+            archivecCore.extractFiles(currentArchive, destPath.getPath().replace('\\', '/'), (ArrayList<Integer>) ids);
+        }
     }
 
     public void crush(ActionEvent event) {
@@ -66,6 +94,8 @@ public class MainController {
             tableArchiveContent.getItems().clear();
             tableArchiveContent.setItems(FXCollections.observableArrayList(archivecCore.extractFilesInfo(file.getPath())));
             tableArchiveContent.refresh();
+
+            currentArchive = file.getPath();
         }
     }
 
