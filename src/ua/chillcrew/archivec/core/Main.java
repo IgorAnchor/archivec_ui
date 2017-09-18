@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ua.chillcrew.archivec.ui.controllers.MainController;
 
 public class Main extends Application {
 
@@ -16,6 +17,8 @@ public class Main extends Application {
 
         primaryStage.setMinWidth(500);
         primaryStage.setMinHeight(400);
+
+        MainController.setStage(primaryStage);
 
         primaryStage.show();
     }

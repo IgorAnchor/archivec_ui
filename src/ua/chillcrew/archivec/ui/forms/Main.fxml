@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane minHeight="200.0" minWidth="300.0" prefHeight="451.0" prefWidth="627.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.chillcrew.archivec.ui.controllers.MainController">
+<BorderPane minHeight="200.0" minWidth="300.0" prefHeight="601.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.chillcrew.archivec.ui.controllers.MainController">
    <bottom>
       <ToolBar nodeOrientation="LEFT_TO_RIGHT" BorderPane.alignment="CENTER">
          <items>
