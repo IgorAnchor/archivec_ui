@@ -1,106 +1,121 @@
 package ua.chillcrew.archivec.ui.controllers;
 
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import sun.java2d.SurfaceDataProxy;
-import ua.chillcrew.archivec.core.ArchivatedFile;
-import ua.chillcrew.archivec.core.ArchivecCore;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import ua.chillcrew.archivec.core.ArchiveItem;
+import ua.chillcrew.archivec.core.Archivec;
+import ua.chillcrew.archivec.core.ArchivecMode;
+import ua.chillcrew.archivec.core.PathTreeItem;
+import ua.chillcrew.archivec.util.ArchivecMethods;
 
 public class MainController {
+    private ArchivecMode currentMode;
 
-    private static Stage stage;
+    private Archivec archivec;
 
-    private ArchivecCore archivecCore;
+    //toolbar
+    @FXML
+    private Button buttonExtract;
+    @FXML
+    private Button buttonExtractAll;
+    @FXML
+    private Button buttonArchivate;
 
-    private FileChooser fileChooser;
-    private DirectoryChooser directoryChooser;
+    //edit tab
+    @FXML
+    private MenuItem menuBarAddFiles;
+    @FXML
+    private MenuItem menuBarRemoveFiles;
 
-    private String currentArchive;
+    //label
+    @FXML
+    private Label labelArchiveInfo;
+
+    //table
+    @FXML
+    TreeTableView<ArchiveItem> tableArchiveContent;
+    @FXML
+    TreeTableColumn<ArchiveItem, Number> tableColumnId;
+    @FXML
+    TreeTableColumn<ArchiveItem, String> tableColumnName;
+    @FXML
+    TreeTableColumn<ArchiveItem, Number> tableColumnSize;
 
 
     @FXML
-    TableView<ArchivatedFile> tableArchiveContent;
-    @FXML
-    TableColumn<ArchivatedFile, Integer> tableColumnId;
-    @FXML
-    TableColumn<ArchivatedFile, String> tableColumnName;
-    @FXML
-    TableColumn<ArchivatedFile, Long> tableColumnSize;
-
-    @FXML
-    protected void initialize() {
-        archivecCore = new ArchivecCore();
-
-        fileChooser = new FileChooser();
-        directoryChooser = new DirectoryChooser();
-
-
-        fileChooser.setInitialDirectory(new File("C:\\Users\\IgorTheMLGPro\\CLionProjects\\3-1\\archivec-core\\cmake-build-debug\\1"));
+    public void initialize() {
+        archivec = new Archivec();
 
         tableArchiveContent.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        tableColumnSize.setCellValueFactory(new PropertyValueFactory<>("size"));
+        tableColumnName.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
+        tableColumnId.setCellValueFactory(new TreeItemPropertyValueFactory<>("id"));
+        tableColumnSize.setCellValueFactory(new TreeItemPropertyValueFactory<>("size"));
+
+        tableArchiveContent.setRoot(Archivec.getRoot());
+        tableArchiveContent.setShowRoot(false);
     }
 
-    public static void setStage(Stage stage) {
-        MainController.stage = stage;
+    private void switchMode(ArchivecMode mode) {
+        currentMode = mode;
+
+        menuBarAddFiles.setDisable(false);
+        menuBarRemoveFiles.setDisable(false);
+
+        if (mode == ArchivecMode.EXISTING_ARCHIVE) {
+            buttonArchivate.setDisable(true);
+
+            buttonExtract.setDisable(false);
+            buttonExtractAll.setDisable(false);
+        } else if (mode == ArchivecMode.NEW_ARCHIVE) {
+            buttonArchivate.setDisable(false);
+
+            buttonExtract.setDisable(true);
+            buttonExtractAll.setDisable(true);
+        }
     }
 
     public void extract(ActionEvent event) {
         System.out.println("extract");
 
-
+        if (currentMode == ArchivecMode.EXISTING_ARCHIVE)
+            archivec.extract();
     }
 
     public void extractFiles(ActionEvent event) {
         System.out.println("extractFiles");
 
-        if (tableArchiveContent.getSelectionModel().getSelectedItems().size() > 0) {
-
-            File destPath = directoryChooser.showDialog(stage);
-
-            List<Integer> ids = tableArchiveContent.getSelectionModel().getSelectedItems()
-                    .stream().map(ArchivatedFile::getId).collect(Collectors.toList());
-
-            archivecCore.extractFiles(currentArchive, destPath.getPath().replace('\\', '/'), (ArrayList<Integer>) ids);
-        }
+        if (currentMode == ArchivecMode.EXISTING_ARCHIVE)
+            archivec.extractFiles(tableArchiveContent);
     }
 
     public void crush(ActionEvent event) {
         System.out.println("crush");
+
+        if (currentMode == ArchivecMode.NEW_ARCHIVE) {
+            archivec.crush();
+        }
     }
 
     public void openArchive(ActionEvent event) {
         System.out.println("openArchive");
+        if (!archivec.openArchive()) return;
 
-        File file = fileChooser.showOpenDialog(stage);
+        labelArchiveInfo.setText(archivec.getCurrentArchive() + " | " +
+                Archivec.fileCount + " files | " +
+                "total size: ~" + ArchivecMethods.getTotalSize(archivec.getArchiveSize()));
 
-        if (file != null) {
-            tableArchiveContent.getItems().clear();
-            tableArchiveContent.setItems(FXCollections.observableArrayList(archivecCore.extractFilesInfo(file.getPath())));
-            tableArchiveContent.refresh();
-
-            currentArchive = file.getPath();
-        }
+        switchMode(ArchivecMode.EXISTING_ARCHIVE);
     }
 
     public void newArchive(ActionEvent event) {
         System.out.println("newArchive");
+        archivec.newArchive();
+        labelArchiveInfo.setText("Unnamed | 0 files");
+
+        switchMode(ArchivecMode.NEW_ARCHIVE);
     }
 
     public void saveArchive(ActionEvent event) {
@@ -113,18 +128,30 @@ public class MainController {
 
     public void addFiles(ActionEvent event) {
         System.out.println("addFiles");
+        archivec.addFiles(currentMode);
+
+        labelArchiveInfo.setText((Archivec.currentArchive.equals("") ? "Unnamed" : Archivec.currentArchive)
+                + " | " + Archivec.fileCount + " files | " +
+                "total size: ~" + ArchivecMethods.getTotalSize(Archivec.archiveSize));
     }
 
     public void removeFiles(ActionEvent event) {
         System.out.println("removeFiles");
+        archivec.removeFiles(tableArchiveContent, currentMode);
+
+        labelArchiveInfo.setText((Archivec.currentArchive.equals("") ? "Unnamed" : Archivec.currentArchive)
+                + " | " + Archivec.fileCount + " files | " +
+                "total size: ~" + ArchivecMethods.getTotalSize(Archivec.archiveSize));
+
+        tableArchiveContent.getSelectionModel().clearSelection();
     }
 
     public void close(ActionEvent event) {
         System.out.println("close");
+
     }
 
     public void settings(ActionEvent event) {
         System.out.println("settings");
     }
-
 }

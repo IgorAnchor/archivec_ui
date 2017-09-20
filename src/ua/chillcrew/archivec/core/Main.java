@@ -18,7 +18,7 @@ public class Main extends Application {
         primaryStage.setMinWidth(500);
         primaryStage.setMinHeight(400);
 
-        MainController.setStage(primaryStage);
+        Archivec.setStage(primaryStage);
 
         primaryStage.show();
     }

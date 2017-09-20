@@ -1,5 +1,7 @@
 package ua.chillcrew.archivec.core;
 
+import javafx.scene.control.TreeItem;
+
 import java.util.ArrayList;
 
 public class ArchivecCore {
@@ -9,7 +11,7 @@ public class ArchivecCore {
 
     private static native void initNative();
 
-    private static native void crushNative(String archive_path);
+    private static native void crushNative(String archive_path, boolean askReplace);
 
     private static native void addToArchiveNative(ArrayList<String> files);
 
@@ -27,13 +29,17 @@ public class ArchivecCore {
 
     private static native void setBufferSizeNative(int newSize);
 
+    private static native void resetNative();
+
+    private static native int getLastIdNative(String path);
+
 
     public ArchivecCore() {
         initNative();
     }
 
-    public void crush(String archive_path) {
-        crushNative(archive_path);
+    public void crush(String archive_path, boolean askReplace) {
+        crushNative(archive_path, askReplace);
     }
 
     public void addToArchive(ArrayList<String> files) {
@@ -52,19 +58,19 @@ public class ArchivecCore {
         return extractFilesNative(archivePath, destPath, ids);
     }
 
-    public ArrayList<ArchivatedFile> extractFilesInfo(String pathToArchive) {
+    public ArrayList<PathTreeItem> extractFilesInfo(String pathToArchive) {
         ArrayList<String> files = extractFilesInfoNative(pathToArchive);
         if (files.size() == 0) return null;
 
-        ArrayList<ArchivatedFile> archivatedFiles = new ArrayList<>(files.size());
+        ArrayList<PathTreeItem> archivatedFiles = new ArrayList<>(files.size());
         for (String fileInfo : files) {
             String[] fields = fileInfo.split("\\|");
 
-            archivatedFiles.add(new ArchivatedFile(
-                    Integer.parseInt(fields[0]),
+            archivatedFiles.add(new PathTreeItem(new ArchiveItem(
+                    fields[0],
                     fields[1],
-                    Long.parseLong(fields[2])
-            ));
+                    fields[2]
+            ), Archivec.getRoot()));
         }
         return archivatedFiles;
     }
@@ -79,6 +85,14 @@ public class ArchivecCore {
 
     public void setBufferSize(int newSize) {
         setBufferSizeNative(newSize);
+    }
+
+    public void reset() {
+        resetNative();
+    }
+
+    public int getLastId(String path) {
+        return getLastIdNative(path);
     }
 }
 
