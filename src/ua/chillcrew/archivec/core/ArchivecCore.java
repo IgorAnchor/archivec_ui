@@ -1,6 +1,6 @@
 package ua.chillcrew.archivec.core;
 
-import javafx.scene.control.TreeItem;
+import ua.chillcrew.archivec.util.ArchivecMethods;
 
 import java.util.ArrayList;
 
@@ -34,31 +34,31 @@ public class ArchivecCore {
     private static native int getLastIdNative(String path);
 
 
-    public ArchivecCore() {
+    ArchivecCore() {
         initNative();
     }
 
-    public void crush(String archive_path, boolean askReplace) {
+    void crush(String archive_path, boolean askReplace) {
         crushNative(archive_path, askReplace);
     }
 
-    public void addToArchive(ArrayList<String> files) {
+    void addToArchive(ArrayList<String> files) {
         addToArchiveNative(files);
     }
 
-    public void addToExistingAtchive(ArrayList<String> files, String pathToArchive) {
+    void addToExistingAtchive(ArrayList<String> files, String pathToArchive) {
         addToExistingAtchiveNative(files, pathToArchive);
     }
 
-    public void extract(String pathRoArchive, String destPath) {
+    void extract(String pathRoArchive, String destPath) {
         extractNative(pathRoArchive, destPath);
     }
 
-    public boolean extractFiles(String archivePath, String destPath, ArrayList<Integer> ids) {
+    boolean extractFiles(String archivePath, String destPath, ArrayList<Integer> ids) {
         return extractFilesNative(archivePath, destPath, ids);
     }
 
-    public ArrayList<PathTreeItem> extractFilesInfo(String pathToArchive) {
+    ArrayList<PathTreeItem> extractFilesInfo(String pathToArchive) {
         ArrayList<String> files = extractFilesInfoNative(pathToArchive);
         if (files.size() == 0) return null;
 
@@ -69,7 +69,7 @@ public class ArchivecCore {
             archivatedFiles.add(new PathTreeItem(new ArchiveItem(
                     fields[0],
                     fields[1],
-                    fields[2]
+                    ArchivecMethods.getTotalSize(Long.parseLong(fields[2]))
             ), Archivec.getRoot()));
         }
         return archivatedFiles;
@@ -79,7 +79,7 @@ public class ArchivecCore {
         return extractFilesCountNative(pathToArchive);
     }
 
-    public void removeFromArchive(ArrayList<Integer> ids, String pathToArchive) {
+    void removeFromArchive(ArrayList<Integer> ids, String pathToArchive) {
         removeFromArchiveNative(ids, pathToArchive);
     }
 
@@ -87,11 +87,11 @@ public class ArchivecCore {
         setBufferSizeNative(newSize);
     }
 
-    public void reset() {
+    void reset() {
         resetNative();
     }
 
-    public int getLastId(String path) {
+    int getLastId(String path) {
         return getLastIdNative(path);
     }
 }

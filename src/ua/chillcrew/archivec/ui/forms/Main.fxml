@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane minHeight="200.0" minWidth="300.0" prefHeight="601.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.chillcrew.archivec.ui.controllers.MainController">
+<BorderPane minHeight="200.0" minWidth="300.0" prefHeight="448.0" prefWidth="570.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.chillcrew.archivec.ui.controllers.MainController">
    <bottom>
-      <ToolBar nodeOrientation="LEFT_TO_RIGHT" BorderPane.alignment="CENTER">
+      <ToolBar nodeOrientation="LEFT_TO_RIGHT" prefWidth="352.0" BorderPane.alignment="CENTER">
          <items>
             <Label fx:id="labelArchiveInfo">
                <opaqueInsets>
@@ -44,14 +44,9 @@
                            </accelerator>
                         </MenuItem>
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="menuBarSave" mnemonicParsing="false" onAction="#saveArchive" text="Save">
+                        <MenuItem fx:id="menuBarSave" disable="true" mnemonicParsing="false" onAction="#crush" text="Save">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                        <MenuItem fx:id="menuBarSaveAs" mnemonicParsing="false" onAction="#saveArchiveAs" text="Save as...">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
                         <SeparatorMenuItem mnemonicParsing="false" />
@@ -80,7 +75,7 @@
               <items>
                 <Button fx:id="buttonExtract" disable="true" mnemonicParsing="false" onAction="#extractFiles" text="Extract" />
                   <Button fx:id="buttonExtractAll" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#extract" text="Extract all" />
-                  <Button fx:id="buttonArchivate" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#crush" text="Archivate" />
+                  <Button fx:id="buttonArchivate" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#crush" text="Save" />
               </items>
             </ToolBar>
          </children>
@@ -89,9 +84,9 @@
    <center>
       <TreeTableView fx:id="tableArchiveContent" prefHeight="500.0" prefWidth="312.0" BorderPane.alignment="CENTER">
         <columns>
-          <TreeTableColumn fx:id="tableColumnName" minWidth="400.0" prefWidth="75.0" text="name" />
-          <TreeTableColumn fx:id="tableColumnId" prefWidth="75.0" text="id" />
-            <TreeTableColumn fx:id="tableColumnSize" prefWidth="300.0" text="size" />
+          <TreeTableColumn fx:id="tableColumnName" maxWidth="1000.0" minWidth="200.0" prefWidth="400.0" text="name" />
+          <TreeTableColumn fx:id="tableColumnId" minWidth="0.0" prefWidth="105.0" text="id" visible="false" />
+            <TreeTableColumn fx:id="tableColumnSize" minWidth="0.0" prefWidth="155.0" text="size" />
         </columns>
       </TreeTableView>
    </center>

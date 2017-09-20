@@ -125,7 +125,7 @@ public class Archivec {
             //set size and add new file
             archiveSize += file.length();
 
-            new PathTreeItem(new ArchiveItem(++lastId + "", file.getName(), file.length() + ""), root);
+            new PathTreeItem(new ArchiveItem(++lastId + "", file.getName(), ArchivecMethods.getTotalSize(file.length())), root);
         }
         //archivate
         ArrayList<String> filePaths = new ArrayList<>();
