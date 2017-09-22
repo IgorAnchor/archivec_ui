@@ -23,8 +23,6 @@ public class ArchivecCore {
 
     private static native ArrayList<String> extractFilesInfoNative(String pathToArchive);
 
-    private static native int extractFilesCountNative(String pathToArchive);
-
     private static native void removeFromArchiveNative(ArrayList<Integer> ids, String pathToArchive);
 
     private static native void setBufferSizeNative(int newSize);
@@ -54,8 +52,8 @@ public class ArchivecCore {
         extractNative(pathRoArchive, destPath);
     }
 
-    boolean extractFiles(String archivePath, String destPath, ArrayList<Integer> ids) {
-        return extractFilesNative(archivePath, destPath, ids);
+    void extractFiles(String archivePath, String destPath, ArrayList<Integer> ids) {
+        extractFilesNative(archivePath, destPath, ids);
     }
 
     ArrayList<PathTreeItem> extractFilesInfo(String pathToArchive) {
@@ -73,10 +71,6 @@ public class ArchivecCore {
             ), Archivec.getRoot()));
         }
         return archivatedFiles;
-    }
-
-    public int extractFilesCount(String pathToArchive) {
-        return extractFilesCountNative(pathToArchive);
     }
 
     void removeFromArchive(ArrayList<Integer> ids, String pathToArchive) {

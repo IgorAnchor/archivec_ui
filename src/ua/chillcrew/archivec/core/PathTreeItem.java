@@ -2,7 +2,7 @@ package ua.chillcrew.archivec.core;
 
 import javafx.scene.control.TreeItem;
 
-public class PathTreeItem extends TreeItem<ArchiveItem> {
+class PathTreeItem extends TreeItem<ArchiveItem> {
 
     PathTreeItem() {
         super();

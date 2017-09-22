@@ -1,14 +1,21 @@
 package ua.chillcrew.archivec.ui.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.TransferMode;
 import ua.chillcrew.archivec.core.ArchiveItem;
 import ua.chillcrew.archivec.core.Archivec;
 import ua.chillcrew.archivec.core.ArchivecMode;
 import ua.chillcrew.archivec.util.ArchivecMethods;
 
+import java.io.File;
+import java.util.List;
 import java.util.Optional;
 
 public class MainController {
@@ -26,6 +33,8 @@ public class MainController {
     //edit tab
     @FXML
     private MenuItem menuBarAddFiles;
+    @FXML
+    private MenuItem menuBarAddDirectories;
     @FXML
     private MenuItem menuBarRemoveFiles;
     @FXML
@@ -59,6 +68,13 @@ public class MainController {
 //        tableColumnId.setVisible(true);
         tableArchiveContent.setRoot(Archivec.getRoot());
         tableArchiveContent.setShowRoot(false);
+
+        tableArchiveContent.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.DELETE) {
+                removeFiles(null);
+            }
+        });
+
     }
 
     private void switchMode(ArchivecMode mode) {
@@ -66,6 +82,7 @@ public class MainController {
 
         menuBarAddFiles.setDisable(false);
         menuBarRemoveFiles.setDisable(false);
+        menuBarAddDirectories.setDisable(false);
 
         if (mode == ArchivecMode.EXISTING_ARCHIVE) {
             buttonArchivate.setDisable(true);
@@ -122,7 +139,14 @@ public class MainController {
 
     public void addFiles(ActionEvent event) {
         System.out.println("addFiles");
-        archivec.addFiles(currentMode);
+        archivec.addFiles(currentMode, null, ArchivecMode.ADD_FILES);
+
+        updateLabel();
+    }
+
+    public void addDirectories(ActionEvent event) {
+        System.out.println("addFiles");
+        archivec.addFiles(currentMode, null, ArchivecMode.ADD_DIRECTORIES);
 
         updateLabel();
     }
@@ -160,11 +184,22 @@ public class MainController {
         System.exit(0);
     }
 
+    public void filesDropped(DragEvent event) {
+        archivec.addFilesFromDrag(tableArchiveContent, event, currentMode);
+    }
+
+    public void filesDragOver(DragEvent event) {
+        if (event.getGestureSource() != tableArchiveContent && event.getDragboard().hasFiles()) {
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+        event.consume();
+    }
+
     public void settings(ActionEvent event) {
         System.out.println("settings");
     }
 
-    private void updateLabel(){
+    private void updateLabel() {
         labelArchiveInfo.setText((Archivec.currentArchive.equals("") ? "Unnamed" : Archivec.currentArchive)
                 + " | " + Archivec.fileCount + " files | " +
                 "total size: ~" + ArchivecMethods.getTotalSize(Archivec.archiveSize));
