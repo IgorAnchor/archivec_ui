@@ -84,7 +84,7 @@
       </VBox>
    </top>
    <center>
-      <TreeTableView fx:id="tableArchiveContent" onDragDropped="#filesDropped" onDragOver="#filesDragOver" prefHeight="500.0" prefWidth="312.0" BorderPane.alignment="CENTER">
+      <TreeTableView fx:id="tableArchiveContent" onDragDetected="#filesDragOut" onDragDone="#filesDragDone" onDragDropped="#filesDropped" onDragOver="#filesDragOver" prefHeight="500.0" prefWidth="312.0" BorderPane.alignment="CENTER">
         <columns>
           <TreeTableColumn fx:id="tableColumnName" maxWidth="1000.0" minWidth="200.0" prefWidth="400.0" text="name" />
           <TreeTableColumn fx:id="tableColumnId" minWidth="0.0" prefWidth="105.0" text="id" visible="false" />

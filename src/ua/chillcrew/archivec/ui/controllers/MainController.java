@@ -1,22 +1,20 @@
 package ua.chillcrew.archivec.ui.controllers;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import ua.chillcrew.archivec.core.ArchiveItem;
 import ua.chillcrew.archivec.core.Archivec;
 import ua.chillcrew.archivec.core.ArchivecMode;
 import ua.chillcrew.archivec.util.ArchivecMethods;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class MainController {
     private ArchivecMode currentMode;
@@ -74,7 +72,6 @@ public class MainController {
                 removeFiles(null);
             }
         });
-
     }
 
     private void switchMode(ArchivecMode mode) {
@@ -191,6 +188,40 @@ public class MainController {
     public void filesDragOver(DragEvent event) {
         if (event.getGestureSource() != tableArchiveContent && event.getDragboard().hasFiles()) {
             event.acceptTransferModes(TransferMode.MOVE);
+        }
+        event.consume();
+    }
+
+    public void filesDragOut(MouseEvent event) {
+        System.out.println("drag detected");
+
+        Dragboard db = tableArchiveContent.startDragAndDrop(TransferMode.COPY_OR_MOVE);
+        ClipboardContent content = new ClipboardContent();
+
+        archivec.extractDraggedFiles(tableArchiveContent);
+
+        List<File> tempFiles = new ArrayList<>();
+        for (TreeItem<ArchiveItem> item : tableArchiveContent.getSelectionModel().getSelectedItems()) {
+            tempFiles.add(new File(System.getProperty("java.io.tmpdir"), item.getValue().getName()));
+        }
+
+        content.putFiles(tempFiles);
+        db.setContent(content);
+        event.consume();
+    }
+
+    public void filesDragDone(DragEvent event) {
+        System.out.println("drag done");
+
+        if (!event.isAccepted()) {
+            Dragboard db = event.getDragboard();
+            List<File> files = db.getFiles();
+
+            if (files != null && !files.isEmpty()) {
+                for (File file : files) {
+                    file.delete();
+                }
+            }
         }
         event.consume();
     }

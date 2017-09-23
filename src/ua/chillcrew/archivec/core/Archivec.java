@@ -3,7 +3,6 @@ package ua.chillcrew.archivec.core;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.input.DragEvent;
-import javafx.scene.shape.Arc;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -51,7 +50,7 @@ public class Archivec {
         File destPath = directoryChooser.showDialog(stage);
         if (destPath == null) return;
 
-        archivecCore.extract(currentArchive, destPath.getPath());
+        archivecCore.extract(currentArchive, destPath.getPath(),true);
     }
 
     public void extractFiles(TreeTableView<ArchiveItem> table) {
@@ -64,7 +63,7 @@ public class Archivec {
                 ArchivecMethods.getFileIds(item, ids);
             }
 
-            archivecCore.extractFiles(currentArchive, destPath.getPath(), ids);
+            archivecCore.extractFiles(currentArchive, destPath.getPath(), ids,true);
         } else {
             System.out.println("error open directory");
         }
@@ -150,17 +149,14 @@ public class Archivec {
         }
         archivecCore.addToArchive(filePaths);
     }
-//TODO: removing not working
+
     public void removeFiles(TreeTableView<ArchiveItem> table, ArchivecMode mode) {
         if (root.getChildren().size() <= 0) return;
 
         long size = 0;
-        for (TreeItem<ArchiveItem> item : table.getSelectionModel().getSelectedItems()) {
-            ArchivecMethods.getSelectedSize(item, size);
-        }
-
         ArrayList<Integer> ids = new ArrayList<>();
         for (TreeItem<ArchiveItem> item : table.getSelectionModel().getSelectedItems()) {
+            ArchivecMethods.getSelectedSize(item, size);
             ArchivecMethods.getFileIds(item, ids);
         }
 
@@ -179,6 +175,8 @@ public class Archivec {
     }
 
     public void addFilesFromDrag(TreeTableView<ArchiveItem> rootTable, DragEvent event, ArchivecMode mode) {
+        System.out.println("add files from drag");
+
         boolean success = false;
         if (event.getGestureSource() != rootTable && event.getDragboard().hasFiles()) {
             List<File> files = event.getDragboard().getFiles();
@@ -187,6 +185,14 @@ public class Archivec {
         }
         event.setDropCompleted(success);
         event.consume();
+    }
+
+    public void extractDraggedFiles(TreeTableView<ArchiveItem> table){
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (TreeItem<ArchiveItem> item : table.getSelectionModel().getSelectedItems()) {
+            ArchivecMethods.getFileIds(item, ids);
+        }
+        archivecCore.extractFiles(Archivec.currentArchive, System.getProperty("java.io.tmpdir"), ids,false);
     }
 
     private void getFiles(File root, int rootIndex, ArrayList<String> names) {

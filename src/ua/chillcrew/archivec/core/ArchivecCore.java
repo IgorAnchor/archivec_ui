@@ -4,7 +4,7 @@ import ua.chillcrew.archivec.util.ArchivecMethods;
 
 import java.util.ArrayList;
 
-public class ArchivecCore {
+class ArchivecCore {
     static {
         System.load("C:/Users/IgorTheMLGPro/CLionProjects/3-1/archivec-core/cmake-build-debug/libarchivec_core.dll");
     }
@@ -17,9 +17,9 @@ public class ArchivecCore {
 
     private static native void addToExistingAtchiveNative(ArrayList<String> files, String pathToArchive);
 
-    private static native void extractNative(String pathRoArchive, String destPath);
+    private static native void extractNative(String pathRoArchive, String destPath, boolean askReplace);
 
-    private static native boolean extractFilesNative(String archivePath, String destPath, ArrayList<Integer> ids);
+    private static native boolean extractFilesNative(String archivePath, String destPath, ArrayList<Integer> ids, boolean askReplace);
 
     private static native ArrayList<String> extractFilesInfoNative(String pathToArchive);
 
@@ -48,12 +48,12 @@ public class ArchivecCore {
         addToExistingAtchiveNative(files, pathToArchive);
     }
 
-    void extract(String pathRoArchive, String destPath) {
-        extractNative(pathRoArchive, destPath);
+    void extract(String pathRoArchive, String destPath, boolean askReplace) {
+        extractNative(pathRoArchive, destPath, askReplace);
     }
 
-    void extractFiles(String archivePath, String destPath, ArrayList<Integer> ids) {
-        extractFilesNative(archivePath, destPath, ids);
+    void extractFiles(String archivePath, String destPath, ArrayList<Integer> ids, boolean askReplace) {
+        extractFilesNative(archivePath, destPath, ids, askReplace);
     }
 
     ArrayList<PathTreeItem> extractFilesInfo(String pathToArchive) {
@@ -77,7 +77,7 @@ public class ArchivecCore {
         removeFromArchiveNative(ids, pathToArchive);
     }
 
-    public void setBufferSize(int newSize) {
+    void setBufferSize(int newSize) {
         setBufferSizeNative(newSize);
     }
 
