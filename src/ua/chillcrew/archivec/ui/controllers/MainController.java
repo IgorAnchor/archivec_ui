@@ -1,5 +1,6 @@
 package ua.chillcrew.archivec.ui.controllers;
 
+import com.sun.javafx.scene.control.skin.LabeledText;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -51,6 +52,8 @@ public class MainController {
     TreeTableColumn<ArchiveItem, String> tableColumnName;
     @FXML
     TreeTableColumn<ArchiveItem, Number> tableColumnSize;
+    @FXML
+    TreeTableColumn<ArchiveItem, Number> tableColumnCompressedSize;
 
 
     @FXML
@@ -62,6 +65,7 @@ public class MainController {
         tableColumnName.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
         tableColumnId.setCellValueFactory(new TreeItemPropertyValueFactory<>("id"));
         tableColumnSize.setCellValueFactory(new TreeItemPropertyValueFactory<>("size"));
+        tableColumnCompressedSize.setCellValueFactory(new TreeItemPropertyValueFactory<>("compressedSize"));
 
 //        tableColumnId.setVisible(true);
         tableArchiveContent.setRoot(Archivec.getRoot());
@@ -194,6 +198,9 @@ public class MainController {
 
     public void filesDragOut(MouseEvent event) {
         System.out.println("drag detected");
+
+        if (tableArchiveContent.getSelectionModel().getSelectedItems().size() == 0 || !(event.getTarget() instanceof LabeledText))
+            return;
 
         Dragboard db = tableArchiveContent.startDragAndDrop(TransferMode.COPY_OR_MOVE);
         ClipboardContent content = new ClipboardContent();

@@ -134,10 +134,10 @@ public class Archivec {
                 ArrayList<String> names = new ArrayList<>();
                 getFiles(file, dirPath.lastIndexOf('/') + 1, names);
                 for (String name : names) {
-                    new PathTreeItem(new ArchiveItem(++lastId + "", name, ArchivecMethods.getTotalSize(file.length())), root);
+                    new PathTreeItem(new ArchiveItem(++lastId + "", name, ArchivecMethods.getTotalSize(file.length()), ""), root);
                 }
             } else {
-                new PathTreeItem(new ArchiveItem(++lastId + "", file.getName(), ArchivecMethods.getTotalSize(file.length())), root);
+                new PathTreeItem(new ArchiveItem(++lastId + "", file.getName(), ArchivecMethods.getTotalSize(file.length()), "0"), root);
             }
 
 

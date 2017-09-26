@@ -28,7 +28,7 @@ class PathTreeItem extends TreeItem<ArchiveItem> {
             tempRoot = formTree(parts[i], tempRoot);
 
             if (tempRoot == null) {
-                TreeItem<ArchiveItem> item = new TreeItem<>(new ArchiveItem("", parts[i], ""));
+                TreeItem<ArchiveItem> item = new TreeItem<>(new ArchiveItem("", parts[i], "", ""));
                 prevRoot.getChildren().add(item);
                 prevRoot = item;
                 tempRoot = prevRoot;
@@ -36,7 +36,7 @@ class PathTreeItem extends TreeItem<ArchiveItem> {
             }
             prevRoot = tempRoot;
         }
-        TreeItem<ArchiveItem> item = new TreeItem<>(new ArchiveItem(value.getId(), parts[parts.length - 1], value.getSize()));
+        TreeItem<ArchiveItem> item = new TreeItem<>(new ArchiveItem(value.getId(), parts[parts.length - 1], value.getSize(), value.getCompressedSize()));
         prevRoot.getChildren().add(item);
     }
 

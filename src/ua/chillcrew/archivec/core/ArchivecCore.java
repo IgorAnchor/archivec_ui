@@ -67,7 +67,8 @@ class ArchivecCore {
             archivatedFiles.add(new PathTreeItem(new ArchiveItem(
                     fields[0],
                     fields[1],
-                    ArchivecMethods.getTotalSize(Long.parseLong(fields[2]))
+                    ArchivecMethods.getTotalSize(Long.parseLong(fields[2])),
+                    ArchivecMethods.getTotalSize(Long.parseLong(fields[3]))
             ), Archivec.getRoot()));
         }
         return archivatedFiles;

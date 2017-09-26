@@ -6,11 +6,17 @@ public class ArchiveItem {
     private SimpleStringProperty id;
     private SimpleStringProperty name;
     private SimpleStringProperty size;
+    private SimpleStringProperty compressedSize;
 
-    public ArchiveItem(final String id, final String name, final String size) {
+    public ArchiveItem(final String id, final String name, final String size, final String compressedSize) {
         this.id = new SimpleStringProperty(id );
         this.name = new SimpleStringProperty(name);
         this.size = new SimpleStringProperty(size);
+        this.compressedSize = new SimpleStringProperty(compressedSize);
+    }
+
+    void setName(String name) {
+        this.name = new SimpleStringProperty(name);
     }
 
     public String getId() {
@@ -37,7 +43,11 @@ public class ArchiveItem {
         return size;
     }
 
-    public void setName(String name) {
-        this.name = new SimpleStringProperty(name);
+    String getCompressedSize() {
+        return compressedSize.get();
+    }
+
+    public SimpleStringProperty compressedSizeProperty() {
+        return compressedSize;
     }
 }
