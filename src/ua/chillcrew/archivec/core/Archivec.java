@@ -34,11 +34,9 @@ public class Archivec {
         fileChooser = new FileChooser();
         directoryChooser = new DirectoryChooser();
         files = new ArrayList<>();
-
-        fileChooser.setInitialDirectory(new File("C:\\Users\\IgorTheMLGPro\\CLionProjects\\3-1\\archivec-core\\cmake-build-debug\\1"));
     }
 
-    static void setStage(Stage stage) {
+    public static void setStage(Stage stage) {
         Archivec.stage = stage;
     }
 

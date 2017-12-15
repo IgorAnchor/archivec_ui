@@ -15,82 +15,82 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane minHeight="200.0" minWidth="300.0" prefHeight="448.0" prefWidth="570.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.chillcrew.archivec.ui.controllers.MainController">
-   <bottom>
-      <ToolBar nodeOrientation="LEFT_TO_RIGHT" prefWidth="352.0" BorderPane.alignment="CENTER">
-         <items>
-            <Label fx:id="labelArchiveInfo">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Label>
-         </items>
-      </ToolBar>
-   </bottom>
-   <top>
-      <VBox prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER">
-         <children>
-            <MenuBar>
-               <menus>
-                  <Menu mnemonicParsing="false" text="File">
-                     <items>
-                        <MenuItem fx:id="menuBarOpen" mnemonicParsing="false" onAction="#openArchive" text="Open">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                        <MenuItem fx:id="menuBarNewArchive" mnemonicParsing="false" onAction="#newArchive" text="New archive">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="menuBarSave" disable="true" mnemonicParsing="false" onAction="#crush" text="Save">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="menuBarSettings" mnemonicParsing="false" onAction="#settings" text="Settings">
-                           <accelerator>
-                              <KeyCodeCombination alt="DOWN" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="menuBarClose" mnemonicParsing="false" onAction="#close" text="Close">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                     </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Edit">
-                     <items>
-                        <MenuItem fx:id="menuBarAddFiles" disable="true" mnemonicParsing="false" onAction="#addFiles" text="Add files" />
-                        <MenuItem fx:id="menuBarAddDirectories" disable="true" mnemonicParsing="false" onAction="#addDirectories" text="Add directories" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="menuBarRemoveFiles" disable="true" mnemonicParsing="false" onAction="#removeFiles" text="Remove files" />
-                     </items>
-                  </Menu>
-               </menus>
-            </MenuBar>
-            <ToolBar prefHeight="40.0" prefWidth="200.0">
-              <items>
-                <Button fx:id="buttonExtract" disable="true" mnemonicParsing="false" onAction="#extractFiles" text="Extract" />
-                  <Button fx:id="buttonExtractAll" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#extract" text="Extract all" />
-                  <Button fx:id="buttonArchivate" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#crush" text="Save" />
-              </items>
-            </ToolBar>
-         </children>
-      </VBox>
-   </top>
-   <center>
-      <TreeTableView fx:id="tableArchiveContent" onDragDetected="#filesDragOut" onDragDone="#filesDragDone" onDragDropped="#filesDropped" onDragOver="#filesDragOver" prefHeight="500.0" prefWidth="312.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TreeTableColumn fx:id="tableColumnName" minWidth="200.0" prefWidth="400.0" text="name" />
-          <TreeTableColumn fx:id="tableColumnId" maxWidth="10.0" minWidth="0.0" prefWidth="10.0" text="id" visible="false" />
-            <TreeTableColumn fx:id="tableColumnSize" minWidth="0.0" prefWidth="130.0" text="size" />
-            <TreeTableColumn fx:id="tableColumnCompressedSize" minWidth="0.0" prefWidth="130.0" text="compressed size" />
-        </columns>
-      </TreeTableView>
-   </center>
+    <bottom>
+        <ToolBar nodeOrientation="LEFT_TO_RIGHT" prefWidth="352.0" BorderPane.alignment="CENTER">
+            <items>
+                <Label fx:id="labelArchiveInfo">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </Label>
+            </items>
+        </ToolBar>
+    </bottom>
+    <top>
+        <VBox prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER">
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem fx:id="menuBarOpen" mnemonicParsing="false" onAction="#openArchive" text="Open">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                    </accelerator>
+                                </MenuItem>
+                                <MenuItem fx:id="menuBarNewArchive" mnemonicParsing="false" onAction="#newArchive" text="New archive">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                    </accelerator>
+                                </MenuItem>
+                                <SeparatorMenuItem mnemonicParsing="false" />
+                                <MenuItem fx:id="menuBarSave" disable="true" mnemonicParsing="false" onAction="#crush" text="Save">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                    </accelerator>
+                                </MenuItem>
+                                <SeparatorMenuItem mnemonicParsing="false" />
+                                <MenuItem fx:id="menuBarSettings" mnemonicParsing="false" onAction="#settings" text="Settings">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="DOWN" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                    </accelerator>
+                                </MenuItem>
+                                <SeparatorMenuItem mnemonicParsing="false" />
+                                <MenuItem fx:id="menuBarClose" mnemonicParsing="false" onAction="#close" text="Close">
+                                    <accelerator>
+                                        <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                    </accelerator>
+                                </MenuItem>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem fx:id="menuBarAddFiles" disable="true" mnemonicParsing="false" onAction="#addFiles" text="Add files" />
+                                <MenuItem fx:id="menuBarAddDirectories" disable="true" mnemonicParsing="false" onAction="#addDirectories" text="Add directories" />
+                                <SeparatorMenuItem mnemonicParsing="false" />
+                                <MenuItem fx:id="menuBarRemoveFiles" disable="true" mnemonicParsing="false" onAction="#removeFiles" text="Remove files" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <ToolBar prefHeight="40.0" prefWidth="200.0">
+                    <items>
+                        <Button fx:id="buttonExtract" disable="true" mnemonicParsing="false" onAction="#extractFiles" text="Extract" />
+                        <Button fx:id="buttonExtractAll" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#extract" text="Extract all" />
+                        <Button fx:id="buttonArchivate" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#crush" text="Save" />
+                    </items>
+                </ToolBar>
+            </children>
+        </VBox>
+    </top>
+    <center>
+        <TreeTableView fx:id="tableArchiveContent" onDragDetected="#filesDragOut" onDragDone="#filesDragDone" onDragDropped="#filesDropped" onDragOver="#filesDragOver" prefHeight="500.0" prefWidth="312.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TreeTableColumn fx:id="tableColumnName" minWidth="200.0" prefWidth="400.0" text="name" />
+                <TreeTableColumn fx:id="tableColumnId" maxWidth="10.0" minWidth="0.0" prefWidth="10.0" text="id" visible="false" />
+                <TreeTableColumn fx:id="tableColumnSize" minWidth="0.0" prefWidth="130.0" text="size" />
+                <TreeTableColumn fx:id="tableColumnCompressedSize" minWidth="0.0" prefWidth="130.0" text="compressed size" />
+            </columns>
+        </TreeTableView>
+    </center>
 </BorderPane>

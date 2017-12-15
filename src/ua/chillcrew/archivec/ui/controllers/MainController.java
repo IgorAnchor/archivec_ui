@@ -58,7 +58,16 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        archivec = new Archivec();
+        try {
+            archivec = new Archivec();
+        } catch (UnsatisfiedLinkError err) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("DLL load error");
+            alert.setContentText(err.getMessage());
+            alert.showAndWait();
+            System.exit(-1);
+        }
 
         tableArchiveContent.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -242,4 +251,9 @@ public class MainController {
                 + " | " + Archivec.fileCount + " files | " +
                 "total size: ~" + ArchivecMethods.getTotalSize(Archivec.archiveSize));
     }
+
+    //TODO: удаление файлов (удалении из таблицы)
+    //TODO: драг в папки
+    //TODO: драгаут файлов из папок и вложеных папок
+    //TODO: прогрессбар
 }

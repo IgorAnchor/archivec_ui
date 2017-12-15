@@ -2,11 +2,17 @@ package ua.chillcrew.archivec.core;
 
 import ua.chillcrew.archivec.util.ArchivecMethods;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 class ArchivecCore {
     static {
-        System.load("C:/Users/IgorTheMLGPro/CLionProjects/3-1/archivec-core/cmake-build-debug/libarchivec_core.dll");
+        try {
+            System.load(new File(".").getCanonicalPath() + File.separator + "libarchivec_core1.dll");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static native void initNative();

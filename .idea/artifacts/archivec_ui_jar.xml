@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="archivec_ui:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/archivec_ui_jar</output-path>
+    <root id="archive" name="archivec_ui.jar">
+      <element id="module-output" name="archivec_ui" />
+    </root>
+  </artifact>
+</component>
