@@ -48,7 +48,7 @@ public class Archivec {
         File destPath = directoryChooser.showDialog(stage);
         if (destPath == null) return;
 
-        archivecCore.extract(currentArchive, destPath.getPath(),true);
+        archivecCore.extract(currentArchive, destPath.getPath(), true);
     }
 
     public void extractFiles(TreeTableView<ArchiveItem> table) {
@@ -61,7 +61,7 @@ public class Archivec {
                 ArchivecMethods.getFileIds(item, ids);
             }
 
-            archivecCore.extractFiles(currentArchive, destPath.getPath(), ids,true);
+            archivecCore.extractFiles(currentArchive, destPath.getPath(), ids, true, false);
         } else {
             System.out.println("error open directory");
         }
@@ -69,21 +69,36 @@ public class Archivec {
         table.getSelectionModel().clearSelection();
     }
 
-    public boolean openArchive() {
-        File file = fileChooser.showOpenDialog(stage);
+    public boolean openArchive(boolean showChooser) {
+        String path;
+        long size;
 
-        if (file != null) {
-            files.clear();
-            root.getChildren().clear();
-            fileCount = 0;
-            lastId = archivecCore.getLastId(file.getPath());
-            files = archivecCore.extractFilesInfo(file.getPath());
+        if (showChooser) {
+            File file = fileChooser.showOpenDialog(stage);
+            if (file == null) return false;
 
-            currentArchive = file.getPath();
-            archiveSize = file.length();
-            return true;
+            path = file.getPath();
+            size = file.length();
+        } else if (currentArchive != "") {
+            path = currentArchive;
+            size = 0;
+        } else {
+            return false;
         }
-        return false;
+
+        files.clear();
+        root.getChildren().clear();
+        fileCount = 0;
+        lastId = archivecCore.getLastId(path);
+        if (lastId == -1) {
+            return false;
+        }
+
+        files = archivecCore.extractFilesInfo(path);
+
+        currentArchive = path;
+        archiveSize = size;
+        return true;
     }
 
     public void newArchive() {
@@ -185,12 +200,12 @@ public class Archivec {
         event.consume();
     }
 
-    public void extractDraggedFiles(TreeTableView<ArchiveItem> table){
+    public void extractDraggedFiles(TreeTableView<ArchiveItem> table) {
         ArrayList<Integer> ids = new ArrayList<>();
         for (TreeItem<ArchiveItem> item : table.getSelectionModel().getSelectedItems()) {
             ArchivecMethods.getFileIds(item, ids);
         }
-        archivecCore.extractFiles(Archivec.currentArchive, System.getProperty("java.io.tmpdir"), ids,false);
+        archivecCore.extractFiles(Archivec.currentArchive, System.getProperty("java.io.tmpdir"), ids, false, false);
     }
 
     private void getFiles(File root, int rootIndex, ArrayList<String> names) {

@@ -129,11 +129,12 @@ public class MainController {
         if (currentMode == ArchivecMode.NEW_ARCHIVE) {
             archivec.crush();
         }
+        updateLabel();
     }
 
     public void openArchive(ActionEvent event) {
         System.out.println("openArchive");
-        if (!archivec.openArchive()) return;
+        if (!archivec.openArchive(true)) return;
 
         updateLabel();
         switchMode(ArchivecMode.EXISTING_ARCHIVE);
@@ -163,7 +164,9 @@ public class MainController {
 
     public void removeFiles(ActionEvent event) {
         System.out.println("removeFiles");
+        if (tableArchiveContent.getSelectionModel().getSelectedIndex() == -1) return;
         archivec.removeFiles(tableArchiveContent, currentMode);
+        if (!archivec.openArchive(false)) return;
 
         updateLabel();
         tableArchiveContent.getSelectionModel().clearSelection();
@@ -251,9 +254,4 @@ public class MainController {
                 + " | " + Archivec.fileCount + " files | " +
                 "total size: ~" + ArchivecMethods.getTotalSize(Archivec.archiveSize));
     }
-
-    //TODO: удаление файлов (удалении из таблицы)
-    //TODO: драг в папки
-    //TODO: драгаут файлов из папок и вложеных папок
-    //TODO: прогрессбар
 }

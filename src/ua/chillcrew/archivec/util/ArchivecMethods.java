@@ -11,11 +11,11 @@ public final class ArchivecMethods {
         if (size < 1024) {
             return size + "b";
         } else if (size < 1048576) {
-            return size / 1024 + "kb ("+size+"b)";
+            return size / 1024 + "kb (" + size + "b)";
         } else if (size < 1073741824) {
-            return size / 1048576 + "mb ("+size+"b)";
+            return size / 1048576 + "mb (" + size + "b)";
         } else {
-            return size / 1073741824 + "gb ("+size+"b)";
+            return size / 1073741824 + "gb (" + size + "b)";
         }
     }
 

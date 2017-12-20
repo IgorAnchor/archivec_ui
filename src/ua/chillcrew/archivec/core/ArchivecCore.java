@@ -8,8 +8,9 @@ import java.util.ArrayList;
 
 class ArchivecCore {
     static {
+//        System.load("C:\\Users\\IgorTheMLGPro\\Documents\\GitHub\\archivec-core\\cmake-build-debug\\libarchivec_core.dll");
         try {
-            System.load(new File(".").getCanonicalPath() + File.separator + "libarchivec_core1.dll");
+            System.load(new File(".").getCanonicalPath() + File.separator + "bin/libarchivec_core.dll");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -25,7 +26,7 @@ class ArchivecCore {
 
     private static native void extractNative(String pathRoArchive, String destPath, boolean askReplace);
 
-    private static native boolean extractFilesNative(String archivePath, String destPath, ArrayList<Integer> ids, boolean askReplace);
+    private static native boolean extractFilesNative(String archivePath, String destPath, ArrayList<Integer> ids, boolean askReplace, boolean isFillPath);
 
     private static native ArrayList<String> extractFilesInfoNative(String pathToArchive);
 
@@ -58,8 +59,8 @@ class ArchivecCore {
         extractNative(pathRoArchive, destPath, askReplace);
     }
 
-    void extractFiles(String archivePath, String destPath, ArrayList<Integer> ids, boolean askReplace) {
-        extractFilesNative(archivePath, destPath, ids, askReplace);
+    void extractFiles(String archivePath, String destPath, ArrayList<Integer> ids, boolean askReplace, boolean isFullPath) {
+        extractFilesNative(archivePath, destPath, ids, askReplace, isFullPath);
     }
 
     ArrayList<PathTreeItem> extractFilesInfo(String pathToArchive) {
