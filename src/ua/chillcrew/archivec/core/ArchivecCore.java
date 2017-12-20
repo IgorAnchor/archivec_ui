@@ -10,7 +10,7 @@ class ArchivecCore {
     static {
 //        System.load("C:\\Users\\IgorTheMLGPro\\Documents\\GitHub\\archivec-core\\cmake-build-debug\\libarchivec_core.dll");
         try {
-            System.load(new File(".").getCanonicalPath() + File.separator + "bin/libarchivec_core.dll");
+            System.load(new File(".").getCanonicalPath() + File.separator + "bin" + File.separator + "libarchivec_core.dll");
         } catch (IOException e) {
             e.printStackTrace();
         }
